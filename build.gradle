@@ -1,0 +1,48 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+sourceCompatibility = 1.8
+
+version = '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
+        classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.2'
+    }
+}
+
+
+mainClassName = 'amazon.geturl.app.GetAmazonUrlRestApp'
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile group: 'com.aol.microservices', name:'micro-grizzly-with-jersey', version:'0.62'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    testCompile ('junit:junit:4.12') {
+        exclude module : 'hamcrest'
+        exclude module : 'hamcrest-core'
+    }
+    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.9.5'
+    testCompile 'org.springframework:spring-test:2.5'
+}
+
